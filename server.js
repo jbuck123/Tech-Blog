@@ -17,5 +17,8 @@ app.get('/login', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register');
 });
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard');
+});
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
