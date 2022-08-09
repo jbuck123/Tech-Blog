@@ -9,10 +9,11 @@ const db = require('./config/db_connection')
 // setting up handlebars
 const { engine } = require('express-handlebars');
 // setting up cookies for users 
-// const session = require('express-session');
-// const SequelizeStore = require('connect-session-sequelize')(session.Store)
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
-// not doing env ... yet ;)
+require('dotenv').config();
+
 
 
 
@@ -31,11 +32,32 @@ app.use(express.static(path.join('front')));
 app.use(express.json());
 // Allow form data to be sent through and also allow object/array data - req.body
 app.use(express.urlencoded({ extended: false }));
+// this gives us access to req.session on our routes
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    // compares session secret to client-side cookie to authenticate user
+    store: new SequelizeStore({ db }),
+    // stores our session data to the database instead of using server system memory, that is why 
+    // there is a session row in tables_in_login_db
+    saveUninitialized: false,
+    // keeps the sequelize store from deleting idle session data
+    resave: false,
+    // the cookie object allows us to maniupulate teh client-side cookie -set experation, 
+    // not accesible to client JS
+    cookie: {
+        httpOnly: true
+    }
+}));
+
+
+
+
+
 
 app.use('/', view_routes);
 // connection to the view router
 
-// app.use('auth', auth_routes);
+app.use('auth', auth_routes);
 
 
 
