@@ -1,6 +1,6 @@
 //starting the server / express and port
 const express = require('express');
-const app = express();
+
 const PORT = process.env.PORT || 8080
 
 const path = require('path')
@@ -9,16 +9,19 @@ const db = require('./config/db_connection')
 // setting up handlebars
 const { engine } = require('express-handlebars');
 // setting up cookies for users 
-const session = require('express-session');
-const SequelizeStore = require('connect-session-sequelize')(session.Store)
+// const session = require('express-session');
+// const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
 // not doing env ... yet ;)
 
 
-// pull in my routes 
-const { view_routes, auth_routes} = require("./controllers")
+
+// pull in my routes ]
+const { view_routes, auth_routes} = require("./controllers");
 
 
+
+const app = express();
 
 app.engine('hbs', engine({extname: 'hbs'}));
 app.set('view engine', 'hbs')
@@ -29,19 +32,13 @@ app.use(express.json());
 // Allow form data to be sent through and also allow object/array data - req.body
 app.use(express.urlencoded({ extended: false }));
 
+app.use('/', view_routes);
+// connection to the view router
 
-app.get('/', (req, res) => {
-    res.render('index');
-});
-app.get('/login', (req, res) => {
-    res.render('login');
-});
-app.get('/register', (req, res) => {
-    res.render('register');
-});
-app.get('/dashboard', (req, res) => {
-    res.render('dashboard');
-});
+// app.use('auth', auth_routes);
+
+
+
 
 
 
