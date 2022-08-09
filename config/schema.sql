@@ -1,0 +1,12 @@
+DROP DATABASE IF EXISTS blog_db;
+
+CREATE DATABASE blog_db;
+
+USE blog_db;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(250) NOT NULL,
+    email VARCHAR(250) NOT NULL,
+    passwords VARCHAR(250) NOT NULL
+)
