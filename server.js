@@ -8,6 +8,15 @@ const path = require('path')
 const db = require('./config/db_connection')
 // setting up handlebars
 const { engine } = require('express-handlebars');
+// setting up cookies for users 
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
+
+// not doing env ... yet ;)
+
+
+// pull in my routes 
+const { view_routes, auth_routes} = require("./controllers")
 
 
 
