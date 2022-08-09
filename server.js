@@ -40,6 +40,8 @@ app.use('/', view_routes);
 
 
 
+//what is this doing again?
 
-
-app.listen(PORT, () => console.log(`listening on port ${PORT}`));
+db.sync({force: false}).then(() => {
+    app.listen(PORT, () => console.log(`listening on port ${PORT}`));
+})
