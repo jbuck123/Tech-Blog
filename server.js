@@ -57,7 +57,7 @@ app.use(session({
 app.use('/', view_routes);
 // connection to the view router
 
-app.use('auth', auth_routes);
+app.use('/auth', auth_routes);
 
 
 

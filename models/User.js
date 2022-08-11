@@ -36,10 +36,24 @@ User.init(
     {
         sequelize: require("../config/db_connection"),
         // pull in connection
-        modelName: 'user'
+        modelName: 'user',
         // table name
-        // not going to use bcrypt bc it is not required but hook would go here
+        hooks: {
+            async beforeCreate(user) {
+                const hashed_pass = await bcrypt.hash(user.password, 10);
+
+                user.password = hashed_pass
+            },
+        },
+        timestamps: true
     }
 );
+
+User.prototype.validatePassword = async function (password, stored_password) {
+    return await bcrypt.compare(password, stored_password);
+};
+
+//User.hasmany(blogs)
+//Blogs.belongsTo(User)
 
 module.exports = User;
