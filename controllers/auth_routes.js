@@ -110,6 +110,14 @@ auth_router.post('/login', isLoggedIn, (req,res) => {
         })
     })
 })
+auth_router.get('/logout', (req,res) => {
+    if(!req.session.userId) return res.redirect('/')
+    req.session.destroy(() => {
+        res.redirect('/')
+        // i think that this needs to be expanded more
+    })
+})
+
 
 
 module.exports = auth_router;
