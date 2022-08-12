@@ -18,7 +18,16 @@ Blog.init({
     textArea: {
         type: DataTypes.STRING,
         allowNull: false,
-    }
-})
+    },
+ 
+},
+{
+    sequelize: require("../config/db_connection"),
+    // pull in connection
+    modelName: 'blog',
+    // table name
+    
+    // timestamps: false
+});
 
 module.exports = Blog

@@ -4,5 +4,15 @@
 
 {{#if user}}
 
-<a class="dashlink" href="/dashboard.hbs"></a>
+<a class="dashlink" href="/dashboard"></a>
+
+
+<form class="test" action="/api/blog" method="post">
+  <h3>New Blog Post</h3>
+  <input class="blog-title" name="title" type="title" placeholder="Enter the title of your blog post">
+  <input class="blog-text" name="textArea" type="textarea" placeholder="what are you bloggin abou?">
+  <button id="submit-btn">Submit</button>
+
+</form>
+
 {{/if}}

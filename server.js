@@ -18,7 +18,7 @@ require('dotenv').config();
 
 
 // pull in my routes ]
-const { view_routes, auth_routes} = require("./controllers");
+const { view_routes, auth_routes, blog_routes} = require("./controllers");
 
 
 
@@ -58,6 +58,8 @@ app.use('/', view_routes);
 // connection to the view router
 
 app.use('/auth', auth_routes);
+
+app.use('/api', blog_routes)
 
 
 

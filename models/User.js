@@ -54,7 +54,7 @@ User.prototype.validatePassword = async function (password, stored_password) {
     return await bcrypt.compare(password, stored_password);
 };
 
-//User.hasmany(blogs)
-//Blogs.belongsTo(User)
+// User.hasmany(Blog)
+// Blogs.belongsTo(User)
 
 module.exports = User;
