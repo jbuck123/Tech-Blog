@@ -52,8 +52,8 @@ view_router.get('/register', isLoggedIn, (req, res) => {
 });
 
 //dashboard page
-view_router.get('/dashboard', (req, res) => {
-    res.render('dashboard');
+view_router.get('/dashboard', isLoggedIn, (req, res) => {
+    res.render('dashboard', {errors: req.session.errors});
 });
 
 module.exports = view_router;
