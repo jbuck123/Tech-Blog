@@ -9,7 +9,7 @@ auth_router.post('/register', isLoggedIn, (req, res) => {
     console.log(req.body)
     if (!username || !email || !password) {
         // if empty text area return errors 
-
+        console.log('error')
         req.session.errors = ['please enter username/ email / password']
         return res.redirect('/register')
     }
@@ -23,22 +23,14 @@ auth_router.post('/register', isLoggedIn, (req, res) => {
     }).then(user => {
         if (user) {
             req.session.errors = [" that email is in use"]
+            console.log('error email taken')
 
             return res.redirect('/login')
         }
 
         // could you check for same username?
 
-        User.findOne({
-            where: {
-                username
-            }
-        }).then(user => {
-            if (user) {
-                req.session.errors = ["username in use, try a different one"]
-    
-                return res.redirect('/register')
-            }
+        
             console.log(req.body)
             //create the new user 
             User.create(req.body)
@@ -49,17 +41,17 @@ auth_router.post('/register', isLoggedIn, (req, res) => {
                         res.redirect('/');
                     });
                 })
-                // .catch(err => {
-                //     console.log(err)
+                .catch(err => {
+                    console.log(err)
 
-                //     // these session.errors is supposed to display to the user via handlebars
-                //     // could use  a refresh on how 
-                //     req.session.errors = err.errors.map(err => err.message);
-                //     res.redirect('/register')
-                // });
+                    // these session.errors is supposed to display to the user via handlebars
+                    // could use  a refresh on how 
+                    req.session.errors = err.errors.map(err => err.message);
+                    res.redirect('/register')
+                });
         });
     });
-})
+
 
 
 
@@ -68,7 +60,8 @@ auth_router.post('/register', isLoggedIn, (req, res) => {
 auth_router.post('/login', isLoggedIn, (req,res) => {
     console.log("loggin in")
     // const { email, password} = req.body;
-
+console.log(req.body.email)
+console.log(req.body.password)
     if(!req.body.email || !req.body.password) {
         //attach erros to the session object
         req.session.errors = ['invalid username or password.'];
@@ -76,18 +69,15 @@ auth_router.post('/login', isLoggedIn, (req,res) => {
     }
     User.findOne({
         where: {email: req.body.email}
-        //needs to be async becasue it needs to wait until it is found
+        //needs to be async becasue it needs to await for user.validatePassword
     }).then(async user => {
+        console.log(user)
         // check if there is a user
         if(!user) {
             req.session.error = ['there is no user with that email'];
             return res.redirect('/login');
         }
-        // check if the password matches the user password
-        if ( password != user.password){
-            req.session.errors = ['your password is incorrect'];
-            return res.redirect('/login');
-        }
+
 
         const pass_is_valid = await user.validatePassword(req.body.password, user.password);
 
@@ -97,17 +87,16 @@ auth_router.post('/login', isLoggedIn, (req,res) => {
             return;
         } else {
             req.session.save(() => {
+            
                 req.session.userId = user.id
+                res.redirect('/');
+                console.log('back to the homepage with the new user')
+
+                // session and attach the user id to the session object 
+                // once the user is validated and no errors have occured, we start a new 
+
             })
         }
-        // once the user is validated and no errors have occured, we start a new 
-        // session and attach the user id to the session object 
-        req.session.save(() => {
-            req.session.user_id = user.id;
-            // after storing the user id to the session object, we redirect them back 
-            // to the root route/index view
-            res.redirect('/');
-        })
     })
 })
 auth_router.get('/logout', (req,res) => {

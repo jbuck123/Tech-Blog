@@ -1,4 +1,4 @@
-const { response } = require('express');
+
 const User = require('../models/User');
 const { isLoggedIn } = require('./helpers');
 
@@ -10,7 +10,9 @@ view_router = require('express').Router();
 
 // after the view routes I will add the user model page
 
-// const User = require('../models/User')
+
+
+// Homepage 
 view_router.get('/', isLoggedIn, (req, res) => {
     // now that the user is getting authenticated, i need to check if the user is logged in when render the page.
     // if the user is logged in then the page is rendered different.
@@ -37,12 +39,19 @@ view_router.get('/', isLoggedIn, (req, res) => {
 
     res.render('index');
 });
-view_router.get('/login', (req, res) => {
-    res.render('login');
+
+// Login page 
+view_router.get('/login', isLoggedIn, (req, res) => {
+    //errors are being attached to the session object, so it can be sent throught wehn the page loads
+    res.render('login', {errors: req.session.errors});
 });
-view_router.get('/register', (req, res) => {
-    res.render('register');
+
+// register page 
+view_router.get('/register', isLoggedIn, (req, res) => {
+    res.render('register', {errors: req.session.errors});
 });
+
+//dashboard page
 view_router.get('/dashboard', (req, res) => {
     res.render('dashboard');
 });
