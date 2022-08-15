@@ -10,10 +10,13 @@ blog_router.post('/blog', isLoggedIn,  (req , res) => {
     const {title, textArea} = req.body
     console.log("blog routing")
  Blog.create({
-    // this is de
+   // creating new blog in the DB
     ...req.body, userId: req.session.userId
 }).then((data) => {
     res.json(data)
+
+    // need to redirect myself back to the dashboard
+    res.redirect("/")
 })
 .catch(err => {
     console.log(err)
@@ -32,11 +35,11 @@ console.log(req.body)
     }
 })
 
-blog_router.get('/blog', isLoggedIn, (res, req) => {
+blog_router.get('/blog', isLoggedIn, (req, res) => {
     Blog.findAll()
     .then((items) => {
         console.log(items)
-        res.JSON(items);
+        res.json(items);
 
     })
     // .catch((err) => res.status(404).json(err))
