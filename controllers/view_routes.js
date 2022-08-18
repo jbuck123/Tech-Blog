@@ -69,7 +69,7 @@ view_router.get('/dashboard', isLoggedIn, (req, res) => {
                 email: user.email,
                 // this is where you can attach a blog post to a user 
             }
-            res.render("dashboard", { user });
+            res.render("dashboard", { user,});
         })
     };
     res.render('dashboard', {errors: req.session.errors});

@@ -4,6 +4,16 @@ const { isLoggedIn } = require('./helpers');
 // finish helpers file // is logged
 // try to get the register rought 
 
+// why is this not working?
+
+// auth_router.get('/user' (req, res) => {
+//     User.findAll()
+//     .then(user => {
+//         res.status( 200 ).json( user )
+//     })
+// })
+
+
 auth_router.post('/register', isLoggedIn, (req, res) => {
     const { username, email, password} = req.body;
     console.log(req.body)
@@ -57,6 +67,7 @@ auth_router.post('/register', isLoggedIn, (req, res) => {
 
 //cannot test the login even though i have seeded users to the the database... >:l
 // lets test the login
+//create user?
 auth_router.post('/login', isLoggedIn, (req,res) => {
     console.log("loggin in")
     // const { email, password} = req.body;
